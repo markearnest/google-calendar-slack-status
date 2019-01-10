@@ -20,9 +20,10 @@ app.post('/', (req, res, next) => {
   let status = req.body.title;
   const dndToken = ' [DND]';
   // parse event start/stop time
-  const dateFormat = 'MMM D, YYYY [at] hh:mmA ZZ';
-  const start = moment(req.body.start + " " + req.body.timezone, dateFormat);
-  const end = moment(req.body.end + " " + req.body.timezone, dateFormat);
+  const dateFormat = 'MMM D, YYYY [at] hh:mmA';
+  const start = moment(req.body.start, dateFormat);
+  const end = moment(req.body.end, dateFormat);
+  const expiration = moment(req.body.end + " " + req.body.timezone, dateFormat + " ZZ");
   // check for DND
   if (status.includes(dndToken)) {
     slack.dnd.setSnooze({
@@ -36,10 +37,9 @@ app.post('/', (req, res, next) => {
     token: process.env.SLACK_TOKEN,
     profile: JSON.stringify({
       "status_text": `${status} from ${start.format('h:mm')} to ${end.format('h:mm a')} ${process.env.TIME_ZONE}`, "status_emoji": ":calendar:",
-      "status_expiration": end.utc().unix()
+      "status_expiration": expiration.utc().unix()
     })
   });
-  console.log(end.format('Z'));
   res.status(200);
   res.send('🤘');
 });
