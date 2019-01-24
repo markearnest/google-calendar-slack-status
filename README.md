@@ -5,3 +5,5 @@ For the full tutorial, please check out the Medium post here: [Syncing your Slac
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 This adds a few extra tid bits
+
+This adds a few more bits. For example using movement-timezone to properly set end date (hard coded to America/New_York because this is for me and I'm in a hurry)
