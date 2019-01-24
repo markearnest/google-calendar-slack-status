@@ -23,7 +23,7 @@ app.post('/', (req, res, next) => {
   const dateFormat = 'MMM D, YYYY [at] hh:mmA';
   const start = moment(req.body.start, dateFormat);
   const end = moment(req.body.end, dateFormat);
-  const expiration = moment(req.body.end + " " + "EST", dateFormat + " ZZ");
+  const expiration = moment.tz(req.body.end, dateFormat,"America/New York");
   // check for DND
   if (status.includes(dndToken)) {
     slack.dnd.setSnooze({
