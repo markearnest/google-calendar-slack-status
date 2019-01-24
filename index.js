@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const slack = require('slack');
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -23,7 +23,7 @@ app.post('/', (req, res, next) => {
   const dateFormat = 'MMM D, YYYY [at] hh:mmA';
   const start = moment(req.body.start, dateFormat);
   const end = moment(req.body.end, dateFormat);
-  const expiration = moment.tz(req.body.end, dateFormat,"America/New_York");
+  const expiration = moment.tz(req.body.end, dateFormat, "America/New_York");
   // check for DND
   if (status.includes(dndToken)) {
     slack.dnd.setSnooze({
