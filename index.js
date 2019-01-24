@@ -23,7 +23,7 @@ app.post('/', (req, res, next) => {
   const dateFormat = 'MMM D, YYYY [at] hh:mmA';
   const start = moment(req.body.start, dateFormat);
   const end = moment(req.body.end, dateFormat);
-  const expiration = moment(req.body.end + " " + req.body.timezone, dateFormat + " ZZ");
+  const expiration = moment(req.body.end + " " + EST, dateFormat + " ZZ");
   // check for DND
   if (status.includes(dndToken)) {
     slack.dnd.setSnooze({
@@ -36,8 +36,8 @@ app.post('/', (req, res, next) => {
   slack.users.profile.set({
     token: process.env.SLACK_TOKEN,
     profile: JSON.stringify({
-      "status_text": `${status} from ${start.format('h:mm')} to ${end.format('h:mm a')} ${process.env.TIME_ZONE} ${expiration.utc().unix()} ${req.body.timezone}`, "status_emoji": ":calendar:",
-      "status_expiration": expiration.utc().unix()
+      "status_text": `${status} from ${start.format('h:mm')} to ${end.format('h:mm a')} ${process.env.TIME_ZONE} ${expiration.unix()}`, "status_emoji": ":calendar:",
+      "status_expiration": expiration.unix()
     })
   });
   res.status(200);
